@@ -18,9 +18,11 @@ from matplotlib import pyplot
 
 diabetes = pd.read_csv('https://raw.githubusercontent.com/hantswilliams/AHI_DataSci_507/main/Datasets/Diabetes/DB1_Diabetes/diabetic_data.csv')
 
-## Retrieving a small sample of the dataframe to visualize collumn names 
-
 diabetes_small = diabetes.sample(100)
+
+diabetes ['totalCountprocedures'] = diabetes['num_lab_procedures'] + diabetes['num_procedures']
+
+
 
 ## Questions: 
     
@@ -32,6 +34,39 @@ diabetes_small = diabetes.sample(100)
 
 sex = diabetes['gender']
 timeinhospital = diabetes['time_in_hospital']
+
+## I first tried to do a shapiro test 
+
+shapiro(timeinhospital)
+
+## ShapiroResult(statistic=0.8869138360023499, pvalue=0.0)
+
+timeinhospital_stat, timeinhospital_p = shapiro(timeinhospital)
+sex_stat, sex_p = shapiro(sex)
+
+## could not convert string to float: 'Female'
+
+## I created a histogram of time in hospital 
+
+pyplot.hist(timeinhospital).show()
+
+## Pearson
+
+from scipy.stats import spearmanr, pearsonr
+
+pearsonr(timeinhospital, sex)
+
+## pearson returned error
+
+spearmanr(timeinhospital, sex)
+
+## spearmanrResult(correlation=-0.038631577215696454, pvalue=6.383652632491919e-35)
+
+## Added a variable for spearman correlation
+
+spearmancorrelation, spearmanp =spearmanr(timeinhospital, sex)
+
+## Performed T test 
 
 Female = diabetes[diabetes['gender']=='Female']
 Male = diabetes[diabetes['gender']=='Male']
